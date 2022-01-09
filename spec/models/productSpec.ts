@@ -1,4 +1,5 @@
 import { Product, ProductStore } from '../../src/models/product'
+import { dbm } from '../testUtil'
 
 const store = new ProductStore
 
@@ -18,6 +19,16 @@ export const deleteTestProduct = async (id: string) => {
 }
 
 describe('Test ProductStore', () => {
+
+  beforeAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
+
+  afterAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
 
   it('create product', async () => {
     const product = await createTestProduct(testProductName, testProductPrice)

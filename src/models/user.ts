@@ -17,7 +17,6 @@ export class UserStore {
     lastname: string,
     password: string,
   ): Promise<User> => {
-    console.log(`userstore: create with ${email}`)
     try {
       const conn = await client.connect()
       const sql =

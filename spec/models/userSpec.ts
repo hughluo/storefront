@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import { User, UserStore } from '../../src/models/user'
+import { dbm } from '../testUtil'
 
 const store = new UserStore
 
@@ -27,6 +28,16 @@ export const deleteTestUser = async () => {
 }
 
 describe('Test UserStore', () => {
+
+  beforeAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
+
+  afterAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
 
   it('create user then delete', async () => {
     await createTestUser()

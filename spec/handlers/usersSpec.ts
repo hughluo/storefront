@@ -1,10 +1,21 @@
 import supertest from 'supertest'
 import { app } from '../../src/server'
 import { testUserEmail, testUserFirstname, testUserLastname, testUserPassword, createTestUser, deleteTestUser, testJwt } from '../models/userSpec'
+import { dbm } from '../testUtil'
 
 
 const request = supertest(app)
 describe('Test user handler', () => {
+  
+  beforeAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
+
+  afterAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
 
   it('create user with jwt token', async () => {
     const response = await (request.post('/users').set('Authorization', `Bearer ${testJwt}` ).send({email: testUserEmail, firstname: testUserFirstname, lastname: testUserLastname, password: testUserPassword}))

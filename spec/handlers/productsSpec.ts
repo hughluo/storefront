@@ -2,10 +2,21 @@ import supertest from 'supertest'
 import { app } from '../../src/server'
 import { testJwt } from '../models/userSpec'
 import { testProductName, testProductPrice, createTestProduct, deleteTestProduct } from '../models/productSpec'
+import { dbm } from '../testUtil'
 
 
 const request = supertest(app)
 describe('Test product handler', () => {
+
+  beforeAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
+
+  afterAll(async () => {
+    await dbm.down()
+    await dbm.up()
+  })
 
   it('create product with jwt token', async () => {
     const response = await (request.post('/products').set('Authorization', `Bearer ${testJwt}` ).send({name: testProductName, price: testProductPrice}))
