@@ -27,7 +27,7 @@ export class UserStore {
     }
   }
 
-  delete = async (username: string): Promise<number> => {
+  deleteByUsername = async (username: string): Promise<number> => {
     try {
       const conn = await client.connect()
       const sql = 'DELETE FROM users where username=($1)'

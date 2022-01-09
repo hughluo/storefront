@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'
-import { User, UserStore } from '../../src/models/user'
+import { UserStore } from '../../src/models/user'
 
 const store = new UserStore
 
@@ -17,7 +17,7 @@ export const createTestUser = async () => {
 }
 
 export const deleteTestUser = async () => {
-    const deletedRowCount = await store.delete(testUsername)
+    const deletedRowCount = await store.deleteByUsername(testUsername)
     expect(deletedRowCount).toBe(1)
 }
 
