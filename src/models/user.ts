@@ -3,61 +3,75 @@ import client from '../database'
 import { PEPPER_STR, SALT_ROUNDS_NUM } from '../config'
 
 export type User = {
-  username: string
+  id: string
+  firstname: string
+  lastname: string
+  email: string
   password_digest: string
 }
 
 export class UserStore {
-  create = async (username: string, password: string): Promise<User> => {
+  create = async (
+    email: string,
+    firstname: string,
+    lastname: string,
+    password: string,
+  ): Promise<User> => {
+    console.log(`userstore: create with ${email}`)
     try {
       const conn = await client.connect()
       const sql =
-        'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *'
-
+        'INSERT INTO users (email, firstname, lastname, password_digest) VALUES($1, $2, $3, $4) RETURNING *'
       const hash = bcrypt.hashSync(password + PEPPER_STR, SALT_ROUNDS_NUM)
-
-      const result = await conn.query(sql, [username, hash])
+      const result = await conn.query(sql, [email, firstname, lastname, hash])
       const user = result.rows[0]
+      // do not return the password_digest
+      user.password_digest = undefined
 
       conn.release()
-
       return user
     } catch (err) {
-      throw new Error(`unable create user with username<${username}>: ${err}`)
+      throw new Error(
+        `failed to create user with email<${email}> firstname<${firstname}> lastname<${lastname}>: ${err}`,
+      )
     }
   }
 
-  deleteByUsername = async (username: string): Promise<number> => {
+  deleteByEmail = async (email: string): Promise<number> => {
     try {
       const conn = await client.connect()
-      const sql = 'DELETE FROM users where username=($1)'
-
-      const result = await conn.query(sql, [username])
+      const sql = 'DELETE FROM users where email=($1)'
+      const result = await conn.query(sql, [email])
       const deletedRowCount = result.rowCount
 
       conn.release()
       return deletedRowCount
     } catch (err) {
-      throw new Error(`unable delete user with username<${username}>: ${err}`)
+      throw new Error(`failed to delete user with email<${email}>: ${err}`)
     }
   }
 
   authenticate = async (
-    username: string,
+    email: string,
     password: string,
   ): Promise<User | null> => {
-    const conn = await client.connect()
-    const sql = 'SELECT * FROM users WHERE username=($1)'
+    try {
+      const conn = await client.connect()
+      const sql = 'SELECT * FROM users WHERE email=($1)'
+      const result = await conn.query(sql, [email])
+      conn.release()
 
-    const result = await conn.query(sql, [username])
-
-    if (result.rows.length) {
-      const user = result.rows[0]
-
-      if (bcrypt.compareSync(password + PEPPER_STR, user.password_digest)) {
-        return user
+      if (result.rows.length) {
+        const user = result.rows[0]
+        if (bcrypt.compareSync(password + PEPPER_STR, user.password_digest)) {
+          return user
+        }
       }
+      return null
+    } catch (err) {
+      throw new Error(
+        `failed to authenticate user with email<${email}>: ${err}`,
+      )
     }
-    return null
   }
 }

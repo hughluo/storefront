@@ -1,23 +1,28 @@
 import dotenv from 'dotenv'
-import { UserStore } from '../../src/models/user'
+import { User, UserStore } from '../../src/models/user'
 
 const store = new UserStore
 
 dotenv.config()
 
-const {TEST_USERNAME, TEST_PASSWORD, TEST_JWT} = process.env
+const {TEST_EMAIL, TEST_FIRSTNAME, TEST_LASTNAME, TEST_PASSWORD, TEST_JWT} = process.env
 
-export const testUsername = TEST_USERNAME as string
-export const testPassword = TEST_PASSWORD as string
+export const testUserEmail = TEST_EMAIL as string
+export const testUserFirstname = TEST_FIRSTNAME as string
+export const testUserLastname = TEST_LASTNAME as string
+export const testUserPassword = TEST_PASSWORD as string
 export const testJwt = TEST_JWT as string
 
-export const createTestUser = async () => {
-    const gotUser = await store.create(testUsername, testPassword)
-    expect(gotUser.username).toBe(testUsername)
+export const createTestUser = async (): Promise<User> => {
+    const gotUser = await store.create(testUserEmail, testUserFirstname, testUserLastname, testUserPassword)
+    expect(gotUser.firstname).toBe(testUserFirstname)
+    expect(gotUser.lastname).toBe(testUserLastname)
+    expect(gotUser.email).toBe(testUserEmail)
+    return gotUser
 }
 
 export const deleteTestUser = async () => {
-    const deletedRowCount = await store.deleteByUsername(testUsername)
+    const deletedRowCount = await store.deleteByEmail(testUserEmail)
     expect(deletedRowCount).toBe(1)
 }
 
@@ -30,7 +35,8 @@ describe('Test UserStore', () => {
 
   it('auth user', async () => {
     await createTestUser()
-    const authRes = await store.authenticate(testUsername, testPassword)
+    const authRes = await store.authenticate(testUserEmail, testUserPassword)
+    
     expect(authRes).toBeDefined()
     await deleteTestUser()
   })
