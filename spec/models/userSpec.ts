@@ -30,13 +30,13 @@ export const deleteTestUser = async () => {
 describe('Test UserStore', () => {
 
   beforeAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   afterAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   it('create user then delete', async () => {

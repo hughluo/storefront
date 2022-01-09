@@ -9,13 +9,13 @@ const request = supertest(app)
 describe('Test product handler', () => {
 
   beforeAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   afterAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   it('create product with jwt token', async () => {

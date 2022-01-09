@@ -21,13 +21,13 @@ export const deleteTestProduct = async (id: string) => {
 describe('Test ProductStore', () => {
 
   beforeAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   afterAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   it('create product', async () => {

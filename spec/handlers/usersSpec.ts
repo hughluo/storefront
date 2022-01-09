@@ -8,13 +8,13 @@ const request = supertest(app)
 describe('Test user handler', () => {
   
   beforeAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   afterAll(async () => {
-    await dbm.down()
-    await dbm.up()
+    await dbm.down(4)
+    await dbm.up(4)
   })
 
   it('create user with jwt token', async () => {
