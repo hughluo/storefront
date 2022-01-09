@@ -1,22 +1,25 @@
 import supertest from 'supertest'
 import { app } from '../../src/server'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { testUsername, testPassword, createTestUser, deleteTestUser } from '../models/userSpec'
 
 const request = supertest(app)
 describe('Test user handler', () => {
 
   it('create user', async () => {
-    const response = await (request.post('/users').send({username: 'tom', password: '42'}))
+    const response = await (request.post('/users').send({username: testUsername, password: testPassword}))
     expect(response.status).toBe(200)
     const payload = jwt.decode(response.body) as JwtPayload
-    const username = payload.user.username
-    expect(username).toBe('tom')
+    const gotUsername = payload.user.username
+    expect(gotUsername).toBe(testUsername)
+    await deleteTestUser()
   })
 
   it('auth user', async () => {
-    const response = await (request.post('/auth').send({username: 'tom', password: '42'}))
+    await createTestUser()
+    const response = await (request.post('/auth').send({username: testUsername, password: testPassword}))
     expect(response.status).toBe(200)
-    expect(response.body).toBeDefined()
+    await deleteTestUser()
   })
 
   it('auth user', async () => {
