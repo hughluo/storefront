@@ -55,6 +55,15 @@ describe('Test UserStore', () => {
     await deleteTestUser()
   })
 
+  it('show users', async () => {
+    const user = await createTestUser()
+    const showedUser = await store.show(user.id)
+    expect(showedUser.email).toBe(user.email)
+    expect(showedUser.firstname).toBe(user.firstname)
+    expect(showedUser.lastname).toBe(user.lastname)
+    await deleteTestUser()
+  })
+
   it('auth user', async () => {
     await createTestUser()
     const authRes = await store.authenticate(testUserEmail, testUserPassword)
