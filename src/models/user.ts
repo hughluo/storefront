@@ -23,7 +23,7 @@ export class UserStore {
 
       return user
     } catch (err) {
-      throw new Error(`unable create user (${username}): ${err}`)
+      throw new Error(`unable create user with username<${username}>: ${err}`)
     }
   }
 
@@ -38,7 +38,7 @@ export class UserStore {
       conn.release()
       return deletedRowCount
     } catch (err) {
-      throw new Error(`unable create user (${username}): ${err}`)
+      throw new Error(`unable delete user with username<${username}>: ${err}`)
     }
   }
 
