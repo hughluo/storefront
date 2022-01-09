@@ -5,7 +5,7 @@ import { dbm } from '../testUtil'
 
 
 const request = supertest(app)
-describe('Test user handler', () => {
+describe('Test users handler', () => {
   
   beforeAll(async () => {
     await dbm.down(4)
