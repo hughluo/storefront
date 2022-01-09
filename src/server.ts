@@ -17,3 +17,4 @@ app.listen(3000, function () {
 })
 
 usersRoutes(app)
+productsRoutes(app)

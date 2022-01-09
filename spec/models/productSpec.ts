@@ -2,8 +2,8 @@ import { Product, ProductStore } from '../../src/models/product'
 
 const store = new ProductStore
 
-const testProductName = 'MagicCookie'
-const testProductPrice = 20
+export const testProductName = 'MagicCookie'
+export const testProductPrice = 20
 
 export const createTestProduct = async (name: string, price: number): Promise<Product> => {
   const gotProduct = await store.create(name, price)

@@ -18,7 +18,7 @@ export class ProductStore {
       conn.release()
       return products
     } catch (err) {
-      throw new Error(`unable index products: ${err}`)
+      throw new Error(`failed to index products: ${err}`)
     }
   }
 
@@ -33,7 +33,7 @@ export class ProductStore {
       conn.release()
       return product
     } catch (err) {
-      throw new Error(`unable show product with id<${id}>: ${err}`)
+      throw new Error(`failed to show product with id<${id}>: ${err}`)
     }
   }
 
@@ -50,7 +50,7 @@ export class ProductStore {
       return product
     } catch (err) {
       throw new Error(
-        `unable create product with name<${name}> price<${price}>: ${err}`,
+        `failed to create product with name<${name}> price<${price}>: ${err}`,
       )
     }
   }
