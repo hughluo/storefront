@@ -4,28 +4,27 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
+**Note**: Some endpoints required JWT(JSON Web Token), see `.env` file in [README](./README.md) for a test JWT.
 #### Products
-- Index 
-- Show
-- Create [token required]
-- [OPTIONAL] Top 5 most popular products 
-- [OPTIONAL] Products by category (args: product category)
+- Index: `GET \products`
+- Show: `GET \products\:id`
+- Create [JWT required]: `POST \products`, with JSON format with fields `name`, `price` in request body.
 
 #### Users
-- Index [token required]
-- Show [token required]
-- Create N[token required]
+- Index [JWT required]: `GET \users`
+- Show [JWT required]: `GET \users\:id`
+- Create N[JWT required]: `POST \users`, with JSON format with fields `email`, `firstname`, `lastname`, `password` in request body.
 
 #### Orders
-- Current Order by user (args: user id)[token required]
-- [OPTIONAL] Completed Orders by user (args: user id)[token required]
+- Current Order by user (args: user id)[JWT required]: `GET \orders?userId=<userId>`, replace `<userId>` with the correct userId.
 
 ## Data Shapes
 #### Product
 -  id
 - name
 - price
-- [OPTIONAL] category
+
+For schema, see [create-table-products](./migrations/sqls/20220108190953-products-table-up.sql).
 
 #### User
 - id
@@ -33,10 +32,14 @@ These are the notes from a meeting with the frontend developer that describe wha
 - lastName
 - password
 
+For schema, see [create-table-users](./migrations/sqls/20220108190524-users-table-up.sql).
+
 #### Orders
 - id
 - id of each product in the order
 - quantity of each product in the order
 - user_id
 - status of order (active or complete)
+
+For schema, see [create-table-orders](./migrations/sqls/20220108191038-orders-table-up.sql) and [create-table-order-products](./migrations/sqls/20220108191140-order-products-table-up.sql).
 
