@@ -1,11 +1,15 @@
-import { assert } from 'console'
-import exp from 'constants'
+import dotenv from 'dotenv'
 import { User, UserStore } from '../../src/models/user'
 
 const store = new UserStore
 
-export const testUsername = 'i-am-just-a-poor-boy-nobody-loves-me'
-export const testPassword = 'easy-come-easy-go'
+dotenv.config()
+
+const {TEST_USERNAME, TEST_PASSWORD, TEST_JWT} = process.env
+
+export const testUsername = TEST_USERNAME as string
+export const testPassword = TEST_PASSWORD as string
+export const testJwt = TEST_JWT as string
 
 export const createTestUser = async () => {
     const gotUser = await store.create(testUsername, testPassword)

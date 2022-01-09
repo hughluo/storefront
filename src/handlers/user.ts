@@ -35,7 +35,7 @@ const authenticate = async (req: Request, res: Response) => {
 }
 
 export const userRoutes = (app: express.Application) => {
-  app.post('/users', create)
+  app.post('/users', verifyAuthToken, create)
   app.post('/auth', authenticate)
 }
 
@@ -50,6 +50,6 @@ export const verifyAuthToken = (
     const verifiedPayload = jwt.verify(token, JWT_SECRET_STR)
     next()
   } catch (error) {
-    res.status(401)
+    res.status(401).send(`${error}`)
   }
 }
