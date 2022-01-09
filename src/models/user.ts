@@ -4,27 +4,27 @@ import { PEPPER_STR, SALT_ROUNDS_NUM } from '../config'
 
 export type User = {
   username: string
-  password: string
+  password_digest: string
 }
 
 export class UserStore {
-  create = async (u: User): Promise<User> => {
+  create = async (username: string, password: string): Promise<User> => {
     try {
       // @ts-ignore
       const conn = await client.connect()
       const sql =
         'INSERT INTO users (username, password_digest) VALUES($1, $2) RETURNING *'
 
-      const hash = bcrypt.hashSync(u.password + PEPPER_STR, SALT_ROUNDS_NUM)
+      const hash = bcrypt.hashSync(password + PEPPER_STR, SALT_ROUNDS_NUM)
 
-      const result = await conn.query(sql, [u.username, hash])
+      const result = await conn.query(sql, [username, hash])
       const user = result.rows[0]
 
       conn.release()
 
       return user
     } catch (err) {
-      throw new Error(`unable create user (${u.username}): ${err}`)
+      throw new Error(`unable create user (${username}): ${err}`)
     }
   }
 
@@ -33,7 +33,7 @@ export class UserStore {
     password: string,
   ): Promise<User | null> => {
     const conn = await client.connect()
-    const sql = 'SELECT password_digest FROM users WHERE username=($1)'
+    const sql = 'SELECT * FROM users WHERE username=($1)'
 
     const result = await conn.query(sql, [username])
 

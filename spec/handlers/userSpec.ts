@@ -18,4 +18,9 @@ describe('Test user handler', () => {
     expect(response.status).toBe(200)
     expect(response.body).toBeDefined()
   })
+
+  it('auth user', async () => {
+    const response = await (request.post('/auth').send({username: 'non-existing', password: 'jerry'}))
+    expect(response.status).toBe(401)
+  })
 })
