@@ -53,6 +53,24 @@ describe('Test users handler', () => {
     expect(response.status).toBe(401)
   })
 
+  it('show user with jwt token', async () => {
+    const user = await createTestUser()
+    const response = await (request.get(`/users/${user.id}`).set('Authorization', `Bearer ${testJwt}`))
+    expect(response.status).toBe(200)
+    const showedUser = response.body
+    expect(showedUser.email).toBe(user.email)
+    expect(showedUser.firstname).toBe(user.firstname)
+    expect(showedUser.lastname).toBe(user.lastname)
+    await deleteTestUser()
+  })
+
+  it('show user without jwt token', async () => {
+    const user = await createTestUser()
+    const response = await (request.get(`/users/${user.id}`))
+    expect(response.status).toBe(401)
+    await deleteTestUser()
+  })
+
   it('auth user with correct password', async () => {
     await createTestUser()
     const response = await (request.post('/auth').send({email: testUserEmail, password: testUserPassword}))

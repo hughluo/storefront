@@ -15,6 +15,17 @@ const index = async (_: Request, res: Response) => {
   }
 }
 
+const show = async (req: Request, res: Response) => {
+  const { id } = req.params
+  try {
+    const showedUser = await store.show(id)
+    res.json(showedUser)
+  } catch (err) {
+    res.status(400)
+    res.json(`Failed to show user: ${err}`)
+  }
+}
+
 const create = async (req: Request, res: Response) => {
   const { email, firstname, lastname, password } = req.body
   if (!email || !firstname || !lastname || !password) {
@@ -50,6 +61,7 @@ const authenticate = async (req: Request, res: Response) => {
 
 export const usersRoutes = (app: express.Application) => {
   app.get('/users', verifyAuthToken, index)
+  app.get('/users/:id', verifyAuthToken, show)
   app.post('/users', verifyAuthToken, create)
   app.post('/auth', authenticate)
 }
