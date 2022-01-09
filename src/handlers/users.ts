@@ -5,6 +5,16 @@ import { JWT_SECRET_STR } from '../config'
 
 const store = new UserStore()
 
+const index = async (_: Request, res: Response) => {
+  try {
+    const users = await store.index()
+    res.json(users)
+  } catch (err) {
+    res.status(400)
+    res.json(`Failed to index users: ${err}`)
+  }
+}
+
 const create = async (req: Request, res: Response) => {
   const { email, firstname, lastname, password } = req.body
   if (!email || !firstname || !lastname || !password) {
@@ -39,6 +49,7 @@ const authenticate = async (req: Request, res: Response) => {
 }
 
 export const usersRoutes = (app: express.Application) => {
+  app.get('/users', verifyAuthToken, index)
   app.post('/users', verifyAuthToken, create)
   app.post('/auth', authenticate)
 }

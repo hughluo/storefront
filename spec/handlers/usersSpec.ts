@@ -18,7 +18,7 @@ describe('Test users handler', () => {
   })
 
   it('create user with jwt token', async () => {
-    const response = await (request.post('/users').set('Authorization', `Bearer ${testJwt}` ).send({email: testUserEmail, firstname: testUserFirstname, lastname: testUserLastname, password: testUserPassword}))
+    const response = await (request.post('/users').set('Authorization', `Bearer ${testJwt}`).send({email: testUserEmail, firstname: testUserFirstname, lastname: testUserLastname, password: testUserPassword}))
     expect(response.status).toBe(200)
     const {email, firstname, lastname} = response.body 
     expect(email).toBe(testUserEmail)
@@ -34,6 +34,22 @@ describe('Test users handler', () => {
 
   it('create user without jwt token', async () => {
     const response = await (request.post('/users').send({email: testUserEmail, password: testUserPassword}))
+    expect(response.status).toBe(401)
+  })
+
+  it('index user with jwt token', async () => {
+    const user = await createTestUser()
+    const response = await (request.get('/users').set('Authorization', `Bearer ${testJwt}`))
+    expect(response.status).toBe(200)
+    const user0 = response.body[0]
+    expect(user0.email).toBe(user.email)
+    expect(user0.firstname).toBe(user.firstname)
+    expect(user0.lastname).toBe(user.lastname)
+    await deleteTestUser()
+  })
+
+  it('index user without jwt token', async () => {
+    const response = await (request.get('/users'))
     expect(response.status).toBe(401)
   })
 
