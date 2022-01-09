@@ -11,6 +11,20 @@ export type User = {
 }
 
 export class UserStore {
+  index = async (): Promise<Array<User>> => {
+    try {
+      const conn = await client.connect()
+      const sql = 'SELECT * FROM users'
+      const result = await conn.query(sql)
+      const users = result.rows
+
+      conn.release()
+      return users
+    } catch (err) {
+      throw new Error(`failed to index users: ${err}`)
+    }
+  }
+
   create = async (
     email: string,
     firstname: string,

@@ -44,6 +44,17 @@ describe('Test UserStore', () => {
     await deleteTestUser()
   })
 
+  it('index users', async () => {
+    const user = await createTestUser()
+    const users = await store.index()
+    expect(users).toHaveSize(1)
+    const user0 = users[0]
+    expect(user0.email).toBe(user.email)
+    expect(user0.firstname).toBe(user.firstname)
+    expect(user0.lastname).toBe(user.lastname)
+    await deleteTestUser()
+  })
+
   it('auth user', async () => {
     await createTestUser()
     const authRes = await store.authenticate(testUserEmail, testUserPassword)
