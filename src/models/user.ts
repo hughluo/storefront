@@ -30,15 +30,13 @@ export class UserStore {
   delete = async (username: string): Promise<number> => {
     try {
       const conn = await client.connect()
-      const sql =
-        'DELETE FROM users where username=($1)'
+      const sql = 'DELETE FROM users where username=($1)'
 
       const result = await conn.query(sql, [username])
       const deletedRowCount = result.rowCount
 
       conn.release()
       return deletedRowCount
-      
     } catch (err) {
       throw new Error(`unable create user (${username}): ${err}`)
     }
