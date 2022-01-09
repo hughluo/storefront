@@ -13,7 +13,8 @@
   },
   "pre-commit": [
     "prettier",
-    "eslint"
+    "eslint",
+    "test"
   ],
   "author": "Yinchi Luo",
   "license": "ISC",
