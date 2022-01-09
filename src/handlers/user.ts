@@ -6,7 +6,7 @@ import { JWT_SECRET_STR } from '../config'
 const store = new UserStore()
 
 const create = async (req: Request, res: Response) => {
-  const {username, password} = req.body
+  const { username, password } = req.body
   try {
     const newUser = await store.create(username, password)
     var token = jwt.sign({ user: newUser }, JWT_SECRET_STR)
@@ -18,7 +18,7 @@ const create = async (req: Request, res: Response) => {
 }
 
 const authenticate = async (req: Request, res: Response) => {
-  const {username, password} = req.body
+  const { username, password } = req.body
   try {
     const u = await store.authenticate(username, password)
     if (!u) {
@@ -39,13 +39,17 @@ export const userRoutes = (app: express.Application) => {
   app.post('/auth', authenticate)
 }
 
-export const verifyAuthToken = (req: Request, res: Response, next: () => void) => {
-    try {
-        const authorizationHeader = req.headers.authorization as string
-        const token = authorizationHeader.split(' ')[1]
-        const verifiedPayload = jwt.verify(token, JWT_SECRET_STR)
-        next()
-    } catch (error) {
-        res.status(401)
-    }
+export const verifyAuthToken = (
+  req: Request,
+  res: Response,
+  next: () => void,
+) => {
+  try {
+    const authorizationHeader = req.headers.authorization as string
+    const token = authorizationHeader.split(' ')[1]
+    const verifiedPayload = jwt.verify(token, JWT_SECRET_STR)
+    next()
+  } catch (error) {
+    res.status(401)
+  }
 }
