@@ -14,7 +14,7 @@ export type OrderProduct = {
 }
 
 export class OrderStore {
-  showLatestActiveOrderProducts = async (
+  showCurrentOrderByUserId = async (
     userId: string,
   ): Promise<Array<OrderProduct>> => {
     try {

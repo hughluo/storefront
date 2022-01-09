@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 import { usersRoutes } from './handlers/users'
 import { productsRoutes } from './handlers/products'
+import { ordersRoutes } from './handlers/orders'
 
 export const app: express.Application = express()
 const address: string = '0.0.0.0:3000'
@@ -18,3 +19,4 @@ app.listen(3000, function () {
 
 usersRoutes(app)
 productsRoutes(app)
+ordersRoutes(app)

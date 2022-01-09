@@ -1,14 +1,9 @@
 import { Order, OrderProduct, OrderStore } from '../../src/models/order'
 import { User } from '../../src/models/user'
-import { createTestUser, deleteTestUser } from './userSpec'
-import { createTestProduct } from './productSpec'
+import { createTestUser} from './userSpec'
+import { createTestProduct, testProductName, testProductPrice } from './productSpec'
 import { dbm } from '../testUtil'
 import { Product } from '../../src/models/product'
-
-const store = new OrderStore()
-
-export const testProductName = 'MagicCookie'
-export const testProductPrice = 20
 
 let user: User
 let product: Product
@@ -16,6 +11,7 @@ let order: Order
 let orderProduct: OrderProduct
 const quantity = 42
 
+const store = new OrderStore()
 
 describe('Test OrderStore', () => {
   beforeAll(async () => {
@@ -33,8 +29,8 @@ describe('Test OrderStore', () => {
     await dbm.up(4)
   })
 
-  it('show product', async () => {
-    const showedProduct = await store.showLatestActiveOrderProducts(user.id)
+  it('show current order by user id', async () => {
+    const showedProduct = await store.showCurrentOrderByUserId(user.id)
     expect(showedProduct[0]).toEqual(orderProduct)
   })
 })
