@@ -6,6 +6,8 @@ jasmine.getEnv().addReporter(
     // add jasmine-spec-reporter
     spec: {
       displayPending: true,
+      displayStacktrace: 'pretty',
+      displaySuccessful: true
     },
     summary: {
       displayDuration: false,
