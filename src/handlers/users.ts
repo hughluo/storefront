@@ -34,7 +34,7 @@ const authenticate = async (req: Request, res: Response) => {
   }
 }
 
-export const userRoutes = (app: express.Application) => {
+export const usersRoutes = (app: express.Application) => {
   app.post('/users', verifyAuthToken, create)
   app.post('/auth', authenticate)
 }

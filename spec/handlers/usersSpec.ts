@@ -21,14 +21,21 @@ describe('Test user handler', () => {
     expect(response.status).toBe(401)
   })
 
-  it('auth user', async () => {
+  it('auth user with correct password', async () => {
     await createTestUser()
     const response = await (request.post('/auth').send({username: testUsername, password: testPassword}))
     expect(response.status).toBe(200)
     await deleteTestUser()
   })
 
-  it('auth user', async () => {
+  it('auth user with incorrect password', async () => {
+    await createTestUser()
+    const response = await (request.post('/auth').send({username: testUsername, password: "incorrect-password"}))
+    expect(response.status).toBe(401)
+    await deleteTestUser()
+  })
+
+  it('auth user non-existing', async () => {
     const response = await (request.post('/auth').send({username: 'non-existing', password: '42'}))
     expect(response.status).toBe(401)
   })
