@@ -1,4 +1,4 @@
-import { SpecReporter } from 'jasmine-spec-reporter'
+const SpecReporter = require('jasmine-spec-reporter').SpecReporter
 
 jasmine.getEnv().clearReporters() // remove default reporter logs
 jasmine.getEnv().addReporter(
@@ -6,6 +6,9 @@ jasmine.getEnv().addReporter(
     // add jasmine-spec-reporter
     spec: {
       displayPending: true,
+    },
+    summary: {
+      displayDuration: false,
     },
   })
 )
