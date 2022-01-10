@@ -4,7 +4,8 @@ The company stakeholders want to create an online storefront to showcase their g
 These are the notes from a meeting with the frontend developer that describe what endpoints the API needs to supply, as well as data shapes the frontend and backend have agreed meet the requirements of the application. 
 
 ## API Endpoints
-**Note**: Some endpoints required JWT(JSON Web Token), see `.env` file in [README](./README.md) for a test JWT.
+**Note**: Some endpoints required JWT(JSON Web Token), see [.env.dev](./.env.dev) for a test JWT. 
+You can create a user use that JWT via `POST \users` and get JWT for a user via `\auth` endpoint.
 #### Products
 - Index: `GET \products`
 - Show: `GET \products\:id`
@@ -13,7 +14,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Users
 - Index [JWT required]: `GET \users`
 - Show [JWT required]: `GET \users\:id`
-- Create N[JWT required]: `POST \users`, with JSON format with fields `email`, `firstname`, `lastname`, `password` in request body.
+- Create [JWT required]: `POST \users`, with JSON format request body with fields `email`, `firstname`, `lastname`, `password`.
+- Auth: `POST \auth`, with JSON format request body with fields `email`, `password`. If success, JWT will be returned.
 
 #### Orders
 - Current Order by user (args: user id)[JWT required]: `GET \orders?userId=<userId>`, replace `<userId>` with the correct userId.
