@@ -4,12 +4,19 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
+    "dev": "npm run export-dev && npm run dev-db-up && db-migrate up && ENV=dev npm run watch",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
-    "test": "jasmine-ts",
+    "test": "npm run test-db-up && ENV=test jasmine-ts && npm run test-db-down",
     "build": "npx tsc",
     "start": "npm run build && node ./dist/server.js",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write",
-    "eslint": "npx eslint src/**/**.ts"
+    "eslint": "npx eslint src/**/**.ts",
+    "test-db-up": "docker-compose --env-file './.env.test' up --detach",
+    "test-db-down": "docker-compose --env-file './.env.test' down",
+    "dev-db-up": "docker-compose --env-file './.env.dev' up --detach",
+    "dev-db-down": "docker-compose --env-file './.env.dev' down",
+    "export-dev": "export $(cat .env.dev | xargs)",
+    "export-test": "export $(cat .env.test | xargs)"
   },
   "pre-commit": [
     "prettier",
