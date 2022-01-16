@@ -4,22 +4,19 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "dev": "export $(cat .env.dev | xargs) && npm run dev-db-up && db-migrate up -e dev && ENV=dev npm run watch",
-    "test": "export $(cat .env.test | xargs) && npm run test-db-up && db-migrate up -e test && ENV=test jasmine-ts && npm run test-db-down",
+    "dev": "export $(cat .env.dev | xargs) && db-migrate up -e dev && ENV=dev npm run watch",
+    "test": "export $(cat .env.test | xargs) && db-migrate up -e test && ENV=test jasmine-ts && npm run test-db-down",
     "watch": "tsc-watch --esModuleInterop src/server.ts --outDir ./dist --onSuccess 'node ./dist/server.js'",
     "build": "npx tsc",
     "start": "npm run build && node ./dist/server.js",
     "prettier": "prettier --config .prettierrc.json 'src/**/*.ts' --write",
     "eslint": "npx eslint src/**/**.ts",
-    "test-db-up": "docker-compose --env-file './.env.test' up --detach",
-    "test-db-down": "docker-compose --env-file './.env.test' down",
-    "dev-db-up": "docker-compose --env-file './.env.dev' up --detach",
-    "dev-db-down": "docker-compose --env-file './.env.dev' down"
+    "dev-db-down": "export $(cat .env.dev | xargs) && docker-compose down -v",
+    "test-db-down": "export $(cat .env.test | xargs) && docker-compose down -v"
   },
   "pre-commit": [
     "prettier",
-    "eslint",
-    "test"
+    "eslint"
   ],
   "author": "Yinchi Luo",
   "license": "ISC",
