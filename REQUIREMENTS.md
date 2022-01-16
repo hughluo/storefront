@@ -14,7 +14,7 @@ You can create a user use that JWT via `POST \users` and get JWT for a user via 
 #### Users
 - Index [JWT required]: `GET \users`
 - Show [JWT required]: `GET \users\:id`
-- Create [JWT required]: `POST \users`, with JSON format request body with fields `email`, `firstname`, `lastname`, `password`.
+- Create: `POST \users`, with JSON format request body with fields `email`, `firstname`, `lastname`, `password`.
 - Auth: `POST \auth`, with JSON format request body with fields `email`, `password`. If success, JWT will be returned.
 
 #### Orders

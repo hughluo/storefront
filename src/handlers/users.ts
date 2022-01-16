@@ -27,17 +27,18 @@ const show = async (req: Request, res: Response) => {
 }
 
 const create = async (req: Request, res: Response) => {
-  const { email, firstname, lastname, password } = req.body
-  if (!email || !firstname || !lastname || !password) {
-    throw new Error(
-      `failed to create user with email<${email}> firstname<${firstname}> lastname<${lastname}>: must have not-null field "email", "firstname", "lastname", "password`,
-    )
-  }
   try {
+    const { email, firstname, lastname, password } = req.body
+    if (!email || !firstname || !lastname || !password) {
+      throw new Error(
+        `failed to create user with email<${email}> firstname<${firstname}> lastname<${lastname}>: 
+        must have not-null field "email", "firstname", "lastname", "password`,
+      )
+    }
     const newUser = await store.create(email, firstname, lastname, password)
     res.json(newUser)
   } catch (err) {
-    res.status(400)
+    res.status(401)
     res.json(`${err}`)
   }
 }
@@ -62,7 +63,7 @@ const authenticate = async (req: Request, res: Response) => {
 export const usersRoutes = (app: express.Application) => {
   app.get('/users', verifyAuthToken, index)
   app.get('/users/:id', verifyAuthToken, show)
-  app.post('/users', verifyAuthToken, create)
+  app.post('/users', create)
   app.post('/auth', authenticate)
 }
 
