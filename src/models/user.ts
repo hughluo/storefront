@@ -54,7 +54,7 @@ export class UserStore {
       const result = await conn.query(sql, [email, firstname, lastname, hash])
       const user: User = result.rows[0]
       // do not return the password_digest
-      user.password_digest = ""
+      user.password_digest = ''
 
       conn.release()
       return user
