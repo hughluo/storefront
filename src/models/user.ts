@@ -16,7 +16,7 @@ export class UserStore {
       const conn = await client.connect()
       const sql = 'SELECT * FROM users'
       const result = await conn.query(sql)
-      const users = result.rows
+      const users: Array<User> = result.rows
 
       conn.release()
       return users
@@ -31,7 +31,7 @@ export class UserStore {
       const sql = 'SELECT * FROM users WHERE id=($1)'
 
       const result = await conn.query(sql, [id])
-      const user = result.rows[0]
+      const user: User = result.rows[0]
 
       conn.release()
       return user
@@ -52,9 +52,9 @@ export class UserStore {
         'INSERT INTO users (email, firstname, lastname, password_digest) VALUES($1, $2, $3, $4) RETURNING *'
       const hash = bcrypt.hashSync(password + PEPPER_STR, SALT_ROUNDS_NUM)
       const result = await conn.query(sql, [email, firstname, lastname, hash])
-      const user = result.rows[0]
+      const user: User = result.rows[0]
       // do not return the password_digest
-      user.password_digest = undefined
+      user.password_digest = ""
 
       conn.release()
       return user
@@ -70,7 +70,7 @@ export class UserStore {
       const conn = await client.connect()
       const sql = 'DELETE FROM users where email=($1)'
       const result = await conn.query(sql, [email])
-      const deletedRowCount = result.rowCount
+      const deletedRowCount: number = result.rowCount
 
       conn.release()
       return deletedRowCount
@@ -90,7 +90,7 @@ export class UserStore {
       conn.release()
 
       if (result.rows.length) {
-        const user = result.rows[0]
+        const user: User = result.rows[0]
         if (bcrypt.compareSync(password + PEPPER_STR, user.password_digest)) {
           return user
         }

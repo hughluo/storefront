@@ -22,7 +22,7 @@ export class OrderStore {
       const sql =
         'SELECT order_products.id, order_products.quantity, order_products.product_id, order_products.order_id FROM orders INNER JOIN order_products ON (SELECT id FROM orders WHERE user_id=($1) AND order_status=($2) ORDER BY id DESC LIMIT 1)=order_products.order_id'
       const result = await conn.query(sql, [userId, 'active'])
-      const orderProducts = result.rows
+      const orderProducts: Array<OrderProduct> = result.rows
       conn.release()
 
       return orderProducts
@@ -44,7 +44,7 @@ export class OrderStore {
         'INSERT INTO order_products (order_id, product_id, quantity) VALUES($1, $2, $3) RETURNING *'
 
       const result = await conn.query(sql, [order_id, product_id, quantity])
-      const orderProduct = result.rows[0]
+      const orderProduct: OrderProduct = result.rows[0]
 
       conn.release()
       return orderProduct
@@ -62,7 +62,7 @@ export class OrderStore {
         'INSERT INTO orders (user_id, order_status) VALUES($1, $2) RETURNING *'
 
       const result = await conn.query(sql, [userId, status])
-      const order = result.rows[0]
+      const order: Order = result.rows[0]
 
       conn.release()
       return order

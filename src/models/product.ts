@@ -13,7 +13,7 @@ export class ProductStore {
       const sql = 'SELECT * FROM products'
 
       const result = await conn.query(sql)
-      const products = result.rows
+      const products: Array<Product> = result.rows
 
       conn.release()
       return products
@@ -28,7 +28,7 @@ export class ProductStore {
       const sql = 'SELECT * FROM products WHERE id=($1)'
 
       const result = await conn.query(sql, [id])
-      const product = result.rows[0]
+      const product: Product = result.rows[0]
 
       conn.release()
       return product
@@ -44,7 +44,7 @@ export class ProductStore {
         'INSERT INTO products (name, price) VALUES($1, $2) RETURNING *'
 
       const result = await conn.query(sql, [name, price])
-      const product = result.rows[0]
+      const product: Product = result.rows[0]
 
       conn.release()
       return product
@@ -61,7 +61,7 @@ export class ProductStore {
       const sql = 'DELETE FROM products where id=($1)'
 
       const result = await conn.query(sql, [id])
-      const deletedRowCount = result.rowCount
+      const deletedRowCount: number = result.rowCount
 
       conn.release()
       return deletedRowCount
