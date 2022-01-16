@@ -6,7 +6,7 @@ const store = new OrderStore()
 
 const showCurrentOrderByUserId = async (req: Request, res: Response) => {
   try {
-    const userId = req.query.userId as string
+    const userId = req.params.userId as string
     if (!userId) {
       throw new Error('missing userId')
     }
@@ -19,5 +19,5 @@ const showCurrentOrderByUserId = async (req: Request, res: Response) => {
 }
 
 export const ordersRoutes = (app: express.Application) => {
-  app.get('/orders', verifyAuthToken, showCurrentOrderByUserId)
+  app.get('/orders/:userId', verifyAuthToken, showCurrentOrderByUserId)
 }

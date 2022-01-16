@@ -34,7 +34,7 @@ describe('Test orders handler', () => {
   })
 
   it('show current order by user id with jwt', async () => {
-    const response = await (request.get('/orders').set('Authorization', `Bearer ${testJwt}`).query({'userId': user.id}))
+    const response = await (request.get(`/orders/${user.id}`).set('Authorization', `Bearer ${testJwt}`))
     expect(response.status).toBe(200)
     expect(response.body[0]).toEqual(orderProduct)
   })

@@ -26,7 +26,7 @@ const index = async (_: Request, res: Response) => {
 }
 
 const show = async (req: Request, res: Response) => {
-  const { id } = req.params
+  const id = req.params.id as string
   try {
     const showedProduct = await store.show(id)
     res.json(showedProduct)
