@@ -4,7 +4,7 @@ dotenv.config()
 
 const { ENV } = process.env
 
-dotenv.config({ path: `.env${ENV}` })
+dotenv.config({ path: `.env.${ENV}` })
 
 const { PEPPER, SALT_ROUNDS, JWT_SECRET } = process.env
 
