@@ -17,13 +17,9 @@ describe('Test users handler', () => {
     await dbm.up(4)
   })
 
-  it('create user with jwt token', async () => {
+  it('create user', async () => {
     const response = await (request.post('/users').send({firstname: testUserFirstname, lastname: testUserLastname, email: testUserEmail, password: testUserPassword}))
     expect(response.status).toBe(200)
-    const {email, firstname, lastname} = response.body 
-    expect(email).toBe(testUserEmail)
-    expect(firstname).toBe(testUserFirstname)
-    expect(lastname).toBe(testUserLastname)
     await deleteTestUser()
   })
 

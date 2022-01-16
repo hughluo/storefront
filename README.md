@@ -4,7 +4,7 @@
 * Run `npm install -g db-migrate` to install database migration.
 * Run `npm install` to install packages.
 * Run `export $(cat .env.dev | xargs) && docker-compose up --detach` to start the database.
-* Run `npm run dev` to start the database via docker-compose, migrate the schema, and start the auto-reloading server, the server should be listening on port `3000` and the database should be listening on port `5434`, for the database credentials, see [`.env.dev`](./.env.dev)
+* Run `npm run dev` to migrate the database schema and start the auto-reloading server, the server should be listening on port `3000` and the database should be listening on port `5434`, for the database credentials, see [`.env.dev`](./.env.dev)
 
 ## Test
 * Run `export $(cat .env.test | xargs) && docker-compose up --detach` to start the database.
